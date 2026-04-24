@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cơm Cháy Khô Quẹt BVINA</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            crimson: {
+              900: '#4a0a0a',
+              800: '#7b1010',
+              700: '#9b1515',
+              600: '#b91c1c',
+              DEFAULT: '#8b1010',
+            },
+            gold: {
+              light: '#f5d98b',
+              DEFAULT: '#c9a227',
+              dark: '#a07a10',
+            },
+            cream: {
+              light: '#fdf6e3',
+              DEFAULT: '#f5e6c8',
+              dark: '#e8d0a0',
+            }
+          },
+          fontFamily: {
+            display: ['Be Vietnam Pro', 'sans-serif'],
+            body: ['Be Vietnam Pro', 'sans-serif'],
+            ui: ['Be Vietnam Pro', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --crimson: #8b1010;
+      --crimson-dark: #4a0a0a;
+      --crimson-light: #b91c1c;
+      --gold: #c9a227;
+      --gold-light: #f5d98b;
+      --cream: #f5e6c8;
+      --cream-light: #fdf6e3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--cream-light);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='none'/%3E%3Ccircle cx='1' cy='1' r='0.5' fill='%23c9a22710'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .section-divider {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto;
+    }
+
+    .ornament {
+      display: inline-block;
+      color: var(--gold);
+      font-size: 1.2rem;
+      opacity: 0.8;
+    }
+
+    /* Hero */
+    .hero-bg {
+      background: linear-gradient(135deg, #4a0a0a 0%, #7b1010 40%, #9b2020 70%, #5a0f0f 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(201, 162, 39, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(201, 162, 39, 0.1) 0%, transparent 40%);
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 5 L35 20 L50 20 L38 30 L43 45 L30 36 L17 45 L22 30 L10 20 L25 20 Z' fill='none' stroke='%23c9a22708' stroke-width='1'/%3E%3C/svg%3E");
+      opacity: 0.5;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      line-height: 1.1;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Navbar */
+    nav {
+      background: rgba(74, 10, 10, 0.97);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+    }
+
+    nav a {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      color: var(--gold-light);
+      text-decoration: none;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* Menu card */
+    .menu-card {
+      background: white;
+      border-radius: 2px;
+      border: 1px solid rgba(201, 162, 39, 0.2);
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s;
+      position: relative;
+    }
+
+    .menu-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201, 162, 39, 0.05) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(139, 16, 16, 0.15);
+    }
+
+    .menu-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Price tag */
+    .price-tag {
+      background: var(--crimson);
+      color: var(--gold-light);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      padding: 6px 16px;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    }
+
+    .special-badge {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      color: var(--crimson-dark);
+    }
+
+    /* Section heading */
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      color: var(--crimson-dark);
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Food emoji plate */
+    .food-plate {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cream), var(--cream-light));
+      border: 3px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      box-shadow: 0 8px 30px rgba(139, 16, 16, 0.15), inset 0 2px 10px rgba(201, 162, 39, 0.1);
+    }
+
+    /* Testimonial */
+    .quote-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      line-height: 0.5;
+      color: var(--gold);
+      opacity: 0.4;
+    }
+
+    /* CTA button */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--crimson), var(--crimson-light));
+      color: var(--gold-light);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      border: 1px solid rgba(201, 162, 39, 0.3);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 16, 16, 0.4);
+      border-color: var(--gold);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--crimson);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      border: 2px solid var(--crimson);
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      background: var(--crimson);
+      color: var(--gold-light);
+    }
+
+    /* Floating rice bowl animation */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-12px) rotate(2deg);
+      }
+    }
+
+    .float-anim {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float2 {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .float-anim2 {
+      animation: float2 5s ease-in-out infinite;
+    }
+
+    /* Red border accent */
+    .red-border-left {
+      border-left: 4px solid var(--crimson);
+      padding-left: 1rem;
+    }
+
+    /* Gold line */
+    .gold-line {
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+    }
+
+    /* Fade in animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    /* Scroll reveal */
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal {
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    /* Hotline */
+    .hotline-badge {
+      background: var(--gold);
+      color: var(--crimson-dark);
+      font-weight: 700;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Star special item */
+    .star-item {
+      background: linear-gradient(135deg, #4a0a0a, #7b1010);
+      border: 2px solid var(--gold);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .star-item::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 0deg, transparent 340deg, rgba(201, 162, 39, 0.15) 360deg);
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Info strip */
+    .info-strip {
+      background: linear-gradient(90deg, #4a0a0a, #7b1010, #4a0a0a);
+      border-top: 2px solid var(--gold);
+      border-bottom: 2px solid var(--gold);
+    }
+
+    /* Header logo */
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--gold-light);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* About section */
+    .about-section {
+      background: linear-gradient(180deg, var(--cream-light) 0%, var(--cream) 100%);
+    }
+
+    /* Gallery photo frame */
+    .photo-frame {
+      border: 3px solid var(--gold);
+      padding: 6px;
+      background: white;
+      box-shadow: 0 10px 30px rgba(139, 16, 16, 0.15), 0 0 0 1px rgba(201, 162, 39, 0.1);
+      transform: rotate(-1deg);
+      transition: transform 0.4s;
+    }
+
+    .photo-frame:hover {
+      transform: rotate(0deg) scale(1.03);
+    }
+
+    .photo-frame:nth-child(even) {
+      transform: rotate(1deg);
+    }
+
+    .photo-frame:nth-child(even):hover {
+      transform: rotate(0deg) scale(1.03);
+    }
+
+    /* Scroll indicator */
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(8px);
+      }
+    }
+
+    .scroll-indicator {
+      animation: bounce 1.5s ease infinite;
+    }
+
+    /* Menu item line */
+    .menu-line {
+      border-bottom: 1px dashed rgba(139, 16, 16, 0.2);
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+    }
+
+    .michelin-badge {
+      border: 1px solid var(--gold);
+      background: rgba(201, 162, 39, 0.1);
+      backdrop-filter: blur(4px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="sticky top-0 z-50 w-full">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="logo-text text-2xl font-bold tracking-wide">
+        🍚 Cơm Cháy BVINA
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#gioi-thieu">Giới Thiệu</a>
+        <a href="#thuc-don">Thực Đơn</a>
+        <a href="#khong-gian">Không Gian</a>
+        <a href="#lien-he">Liên Hệ</a>
+      </div>
+      <a href="tel:0704725597" class="btn-primary px-5 py-2 rounded text-sm cursor-pointer">
+        📞 Đặt Ngay
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero-bg min-h-screen flex flex-col items-center justify-center relative px-4 py-24">
+    <!-- Decorative circles -->
+    <div class="absolute top-20 left-10 w-64 h-64 rounded-full opacity-10"
+      style="background: radial-gradient(circle, var(--gold), transparent)"></div>
+    <div class="absolute bottom-20 right-10 w-48 h-48 rounded-full opacity-10"
+      style="background: radial-gradient(circle, var(--gold), transparent)"></div>
+
+    <div class="relative z-10 text-center max-w-4xl mx-auto">
+      <!-- Floating food -->
+      <div class="float-anim inline-block text-8xl mb-8">
+        <img class="w-48" src="/images/comchay.png" alt="">
+      </div>
+
+      <div class="flex items-center justify-center gap-4 mb-4">
+        <div class="gold-line"></div>
+        <span class="text-gold-light text-sm tracking-[0.3em] uppercase font-ui font-light"
+          style="color: var(--gold-light)">Món Ngon Đậm Đà</span>
+        <div class="gold-line"></div>
+      </div>
+
+      <h1 class="hero-title text-6xl md:text-8xl font-black mb-4" style="color: var(--gold-light)">
+        Cơm Cháy
+      </h1>
+      <h2 class="hero-title text-4xl md:text-6xl font-bold mb-6" style="color: white">
+        Khô Quẹt BVINA
+      </h2>
+
+      <p class="font-body text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
+        style="color: rgba(245,217,139,0.85)">
+        Hương vị dân dã đậm đà — cơm cháy giòn tan kết hợp khô quẹt tép thơm lừng, gợi nhớ bữa cơm quê nhà mộc mạc mà
+        khó quên.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
+        <a href="#thuc-don" class="btn-primary px-8 py-3 rounded-sm cursor-pointer">
+          Xem Thực Đơn
+        </a>
+        <a href="#lien-he" class="btn-outline px-8 py-3 rounded-sm cursor-pointer"
+          style="border-color: var(--gold-light); color: var(--gold-light)">
+          Liên Hệ Đặt Món
+        </a>
+      </div>
+
+      <!-- Info badges -->
+      <div class="flex flex-wrap items-center justify-center gap-6">
+        <div class="michelin-badge flex items-center gap-2 px-4 py-2 rounded-full">
+          <span>🚴</span>
+          <span class="text-sm font-ui" style="color: var(--gold-light)">Miễn phí ship 2km</span>
+        </div>
+        <div class="michelin-badge flex items-center gap-2 px-4 py-2 rounded-full">
+          <span>⏰</span>
+          <span class="text-sm font-ui" style="color: var(--gold-light)">Mở cửa sáng đến tối</span>
+        </div>
+        <div class="michelin-badge flex items-center gap-2 px-4 py-2 rounded-full">
+          <span>✨</span>
+          <span class="text-sm font-ui" style="color: var(--gold-light)">Từ 30.000đ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 scroll-indicator">
+      <div class="flex flex-col items-center gap-2" style="color: var(--gold-light); opacity: 0.6">
+        <span class="text-xs tracking-widest uppercase font-ui">Khám Phá</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFO STRIP -->
+  <div class="info-strip py-4">
+    <div class="max-w-7xl mx-auto px-6 flex flex-wrap items-center justify-center gap-8 md:gap-16 text-center">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">📞</span>
+        <div>
+          <p class="text-xs tracking-widest uppercase mb-0.5" style="color: rgba(245,217,139,0.6)">Hotline / Zalo</p>
+          <p class="font-display font-bold text-lg" style="color: var(--gold-light)">0704 725 597</p>
+        </div>
+      </div>
+      <div class="w-px h-10 hidden md:block" style="background: rgba(201,162,39,0.3)"></div>
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🕐</span>
+        <div>
+          <p class="text-xs tracking-widest uppercase mb-0.5" style="color: rgba(245,217,139,0.6)">Giờ Mở Cửa</p>
+          <p class="font-display font-bold text-lg" style="color: var(--gold-light)">17:00 - 22:00</p>
+        </div>
+      </div>
+      <div class="w-px h-10 hidden md:block" style="background: rgba(201,162,39,0.3)"></div>
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🛵</span>
+        <div>
+          <p class="text-xs tracking-widest uppercase mb-0.5" style="color: rgba(245,217,139,0.6)">Giao Hàng</p>
+          <p class="font-display font-bold text-lg" style="color: var(--gold-light)">Miễn phí trong 2km</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GIỚI THIỆU SECTION -->
+  <section id="gioi-thieu" class="about-section py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="text-sm tracking-[0.3em] uppercase mb-3 font-ui font-medium" style="color: var(--crimson)">Về Chúng
+          Tôi</p>
+        <h2 class="section-heading text-4xl md:text-5xl font-black mb-4">Cơm Cháy Khô Quẹt BVINA</h2>
+        <div class="section-divider mt-4"></div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="red-border-left mb-8">
+            <h3 class="font-display text-2xl font-bold mb-3" style="color: var(--crimson-dark)">Hương Vị Dân Dã Đậm Đà
+            </h3>
+            <p class="font-body text-lg leading-relaxed" style="color: #444">
+              Cơm cháy khô quẹt là món ăn giản dị nhưng đậm chất quê hương, gắn liền với ký ức tuổi thơ của bao thế hệ
+              người Việt. Tại BVINA, chúng tôi giữ nguyên hồn vị truyền thống — cơm cháy giòn rụm, khô quẹt thơm lừng
+              tép khô rang cùng mỡ hành, đường, nước mắm chuẩn vị.
+            </p>  
+          </div>
+          <div class="red-border-left mb-8">
+            <h3 class="font-display text-2xl font-bold mb-3" style="color: var(--crimson-dark)">Nguyên Liệu Tươi Sạch
+            </h3>
+            <p class="font-body text-lg leading-relaxed" style="color: #444">
+              Chúng tôi chọn lọc kỹ càng từng nguyên liệu — gạo ngon, tép khô thơm, rau luộc xanh mướt — để mang đến
+              trải nghiệm ẩm thực chân thực và lành mạnh nhất cho thực khách.
+            </p>
+          </div>
+          <div class="flex items-center gap-4 mt-8">
+            <div class="food-plate float-anim2">🍚</div>
+            <div class="food-plate float-anim" style="animation-delay: 0.5s">🥬</div>
+            <div class="food-plate float-anim2" style="animation-delay: 1s">🍤</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="photo-frame">
+            <div class="aspect-square flex items-center justify-center text-8xl"
+              style="background: linear-gradient(135deg, #fdf6e3, #f5e6c8)">
+            <img src="/images/anhcomchay.png" alt="">
+            </div>
+          </div>
+          <div class="photo-frame mt-8">
+            <div class="aspect-square flex items-center justify-center text-8xl"
+              style="background: linear-gradient(135deg, #fdf6e3, #f5e6c8)">
+              <img src="/images/anhkhoquet.png" alt="">
+            </div>
+          </div>
+          <div class="photo-frame">
+            <div class="aspect-square flex items-center justify-center text-8xl"
+              style="background: linear-gradient(135deg, #fdf6e3, #f5e6c8)">
+              <img src="/images/anhrau.png" alt="">
+            </div>
+          </div>
+          <div class="photo-frame mt-8">
+            <div class="aspect-square flex items-center justify-center text-8xl"
+              style="background: linear-gradient(135deg, #fdf6e3, #f5e6c8)">
+              <img src="/images/comchay.png" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU SECTION -->
+  <section id="thuc-don" class="py-24 px-6"
+    style="background: linear-gradient(180deg, var(--cream) 0%, #4a0a0a08 100%)">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="text-sm tracking-[0.3em] uppercase mb-3 font-ui font-medium" style="color: var(--gold-dark)">Thực Đơn
+        </p>
+        <h2 class="section-heading text-4xl md:text-5xl font-black mb-4" style="color: var(--crimson-dark)">Các Món Cơm
+          Cháy</h2>
+        <div class="section-divider mt-4"></div>
+        <p class="font-body text-xl mt-6 max-w-2xl mx-auto" style="color: #555">
+          Mỗi phần cơm cháy đều được nướng giòn tại chỗ, ăn kèm khô quẹt đậm đà và rau luộc tươi mát.
+        </p>
+      </div>
+
+      <!-- CƠM CHÁY Category -->
+      <div class="mb-6">
+        <div class="flex items-center gap-4 mb-10">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+            style="background: var(--crimson); ">🍚</div>
+          <div>
+            <h3 class="font-display text-3xl font-bold" style="color: var(--crimson-dark)">Cơm Cháy</h3>
+            <p class="font-body text-base" style="color: #888">Cơm cháy giòn rụm, thơm lừng</p>
+          </div>
+          <div class="flex-1 h-px" style="background: linear-gradient(90deg, var(--gold), transparent)"></div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+          <!-- Item 1: Bình thường chay -->
+          <div class="menu-card rounded-lg shadow-md">
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                  <h4 class="font-display text-xl font-bold mb-2" style="color: var(--crimson-dark)">
+                    Cơm Cháy Khô Quẹt Bình Thường
+                  </h4>
+                  <span class="inline-block text-xs px-3 py-1 rounded-full font-ui font-medium"
+                    style="background: #e8f5e9; color: #2e7d32">🌿 Chay</span>
+                </div>
+                <div class="price-tag ml-4 whitespace-nowrap">30k</div>
+              </div>
+              <p class="font-body text-base leading-relaxed" style="color: #666">
+                Cơm cháy giòn tan kết hợp khô quẹt chay thơm ngon, thanh mát, phù hợp với người ăn chay.
+              </p>
+              <div class="flex items-center gap-2 mt-4">
+                <span class="text-2xl">🍚</span>
+                <span class="text-2xl">➕</span>
+                <span class="text-2xl">🥣</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2: Chà bông mỡ hành -->
+          <div class="menu-card rounded-lg shadow-md">
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                  <h4 class="font-display text-xl font-bold mb-2" style="color: var(--crimson-dark)">
+                    Cơm Cháy Chà Bông Mỡ Hành
+                  </h4>
+                  <span class="inline-block text-xs px-3 py-1 rounded-full font-ui font-medium"
+                    style="background: #fff3e0; color: #e65100">🧅 Đặc Sắc</span>
+                </div>
+                <div class="price-tag ml-4 whitespace-nowrap">40k</div>
+              </div>
+              <p class="font-body text-base leading-relaxed" style="color: #666">
+                Cơm cháy khô quẹt phủ đầy chà bông thơm béo, chan mỡ hành xanh mướt — vị đậm đà khó cưỡng.
+              </p>
+              <div class="flex items-center gap-2 mt-4">
+                <span class="text-2xl">🍚</span>
+                <span class="text-2xl">➕</span>
+                <span class="text-2xl">🥩</span>
+                <span class="text-2xl">➕</span>
+                <span class="text-2xl">🧅</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: Rau luộc -->
+          <div class="menu-card rounded-lg shadow-md">
+            <div class="p-6">
+              <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                  <h4 class="font-display text-xl font-bold mb-2" style="color: var(--crimson-dark)">
+                    Cơm Cháy Khô Quẹt Rau Luộc
+                  </h4>
+                  <span class="inline-block text-xs px-3 py-1 rounded-full font-ui font-medium"
+                    style="background: #e8f5e9; color: #388e3c">🥬 Tươi Mát</span>
+                </div>
+                <div class="price-tag ml-4 whitespace-nowrap">40k</div>
+              </div>
+              <p class="font-body text-base leading-relaxed" style="color: #666">
+                Cơm cháy giòn kết hợp rau luộc xanh tươi, chấm cùng khô quẹt đậm đà — cân bằng và tròn vị.
+              </p>
+              <div class="flex items-center gap-2 mt-4">
+                <span class="text-2xl">🍚</span>
+                <span class="text-2xl">➕</span>
+                <span class="text-2xl">🥬</span>
+                <span class="text-2xl">➕</span>
+                <span class="text-2xl">🥣</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4: Đặc biệt - FEATURED -->
+          <div class="star-item rounded-lg shadow-xl relative overflow-hidden">
+            <div class="relative z-10 p-6">
+              <div class="flex items-start justify-between mb-3">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="text-2xl">⭐</span>
+                    <h4 class="font-display text-xl font-bold" style="color: var(--gold-light)">
+                      Cơm Cháy Khô Quẹt Đặc Biệt
+                    </h4>
+                  </div>
+                  <span class="inline-block text-xs px-3 py-1 rounded-full font-ui font-bold"
+                    style="background: var(--gold); color: var(--crimson-dark)">⭐ Món Nổi Bật</span>
+                </div>
+                <div class="ml-4 whitespace-nowrap font-display font-bold text-2xl" style="color: var(--gold-light)">50k
+                </div>
+              </div>
+              <p class="font-body text-base leading-relaxed" style="color: rgba(245,217,139,0.9)">
+                Trọn bộ đặc biệt nhất — cơm cháy siêu giòn, khô quẹt tép thơm đậm đà, chà bông béo ngậy, rau luộc xanh
+                tươi và mỡ hành thơm lừng.
+              </p>
+              <div class="flex items-center gap-2 mt-4">
+                <span class="text-2xl">🍚</span>
+                <span class="text-2xl">➕</span>
+                <span class="text-2xl">🥬</span>
+                <span class="text-2xl">➕</span>
+                <span class="text-2xl">🥩</span>
+                <span class="text-2xl">➕</span>
+                <span class="text-2xl">🧅</span>
+              </div>
+            </div>
+            <!-- Gold shimmer line -->
+            <div class="absolute bottom-0 left-0 right-0 h-1"
+              style="background: linear-gradient(90deg, transparent, var(--gold), transparent)"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MÓN THÊM Category -->
+      <div class="mt-16">
+        <div class="flex items-center gap-4 mb-10">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+            style="background: var(--gold); ">➕</div>
+          <div>
+            <h3 class="font-display text-3xl font-bold" style="color: var(--crimson-dark)">Món Thêm</h3>
+            <p class="font-body text-base" style="color: #888">Thêm để tròn vị hơn</p>
+          </div>
+          <div class="flex-1 h-px" style="background: linear-gradient(90deg, var(--gold), transparent)"></div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="menu-card rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <span class="text-4xl">🥬</span>
+                <div>
+                  <h4 class="font-display text-xl font-bold" style="color: var(--crimson-dark)">Rau Luộc</h4>
+                  <p class="font-body text-sm" style="color: #888">Rau tươi luộc chín tới, xanh mướt</p>
+                </div>
+              </div>
+              <div class="price-tag">10k / phần</div>
+            </div>
+          </div>
+
+          <div class="menu-card rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <span class="text-4xl">🥣</span>
+                <div>
+                  <h4 class="font-display text-xl font-bold" style="color: var(--crimson-dark)">Khô Quẹt</h4>
+                  <p class="font-body text-sm" style="color: #888">Khô quẹt tép thơm đậm đà chuẩn vị</p>
+                </div>
+              </div>
+              <div class="price-tag">10k / phần</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- KHÔNG GIAN (Gallery) -->
+  <section id="khong-gian" class="py-24 px-6" style="background: var(--crimson-dark)">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <p class="text-sm tracking-[0.3em] uppercase mb-3 font-ui font-medium" style="color: var(--gold)">Trải Nghiệm
+        </p>
+        <h2 class="font-display text-4xl md:text-5xl font-black mb-4" style="color: var(--gold-light)">Hương Vị & Cảm
+          Xúc</h2>
+        <div class="section-divider mt-4"></div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="col-span-2 rounded-lg overflow-hidden"
+          style="background: linear-gradient(135deg, #7b1010, #4a0a0a); border: 1px solid rgba(201,162,39,0.3)">
+          <div class="p-10 flex flex-col items-center justify-center text-center h-full min-h-48">
+            <div class="text-7xl mb-4">
+              <img class="w-48" src="/images/anhcomchay.png" alt="">
+            </div>
+            <p class="font-display text-xl italic" style="color: var(--gold-light)">Giòn tan từng miếng</p>
+            <p class="font-body text-sm mt-2" style="color: rgba(245,217,139,0.6)">Cơm cháy nướng tươi tại chỗ</p>
+          </div>
+        </div>
+        <div class="rounded-lg overflow-hidden"
+          style="background: linear-gradient(135deg, #5a0f0f, #7b1010); border: 1px solid rgba(201,162,39,0.2)">
+          <div class="p-8 flex flex-col items-center justify-center text-center h-full min-h-40">
+            <div class="text-5xl mb-3"><img class="w-48" src="/images/anhkhoquet.png" alt=""></div>
+            <p class="font-display text-base italic" style="color: var(--gold-light)">Khô quẹt đậm đà</p>
+          </div>
+        </div>
+        <div class="rounded-lg overflow-hidden"
+          style="background: linear-gradient(135deg, #6a1212, #9b1515); border: 1px solid rgba(201,162,39,0.2)">
+          <div class="p-8 flex flex-col items-center justify-center text-center h-full min-h-40">
+            <div class="text-5xl mb-3"><img class="w-48" src="/images/anhrau.png" alt=""></div>
+            <p class="font-display text-base italic" style="color: var(--gold-light)">Rau luộc tươi mát</p>
+          </div>
+        </div>
+        <div class="rounded-lg overflow-hidden"
+          style="background: linear-gradient(135deg, #4a0a0a, #6a1212); border: 1px solid rgba(201,162,39,0.2)">
+          <div class="p-8 flex flex-col items-center justify-center text-center h-full min-h-40">
+            <div class="text-5xl mb-3">
+              <img class="w-48" src="/images/comchay.png" alt="">
+            </div>
+            <p class="font-display text-base italic" style="color: var(--gold-light)">Mỡ hành thơm lừng</p>
+          </div>
+        </div>
+        <div class="col-span-2 md:col-span-3 rounded-lg overflow-hidden"
+          style="background: linear-gradient(135deg, #7b1010, #9b2020); border: 1px solid rgba(201,162,39,0.3)">
+          <div class="p-10 flex flex-col md:flex-row items-center gap-6 h-full">
+            <span class="text-7xl">🤤</span>
+            <div>
+              <h4 class="font-display text-2xl font-bold mb-2" style="color: var(--gold-light)">Đặt Hàng Dễ Dàng</h4>
+              <p class="font-body text-base" style="color: rgba(245,217,139,0.8)">Gọi điện hoặc nhắn Zalo để đặt món.
+                Giao hàng miễn phí trong bán kính 2km.</p>
+              <div class="mt-4 inline-block hotline-badge px-5 py-2 rounded-sm font-ui text-base">
+                📞 0704 725 597
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ <section id="menu" class="py-24 px-6" style="background: linear-gradient(135deg, #fdf6e3, #f5e6c8)">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="font-display text-4xl md:text-5xl font-black mb-4" style="color: var(--crimson-dark)">Menu BVINA</h2>
+        <div class="section-divider mt-4"></div>
+      </div>
+
+     <div class="menu-bvina flex items-center justify-center">
+      <img class="w-[50%] rounded-xl" src="/images/aaf1b2f7-7ccf-43de-bf95-1e9c293c2b0e.png" alt="Menu BVINA">
+     </div>
+    </div>
+  </section>
+  <!-- LIÊN HỆ / FOOTER CTA -->
+  <section id="lien-he" class="hero-bg py-24 px-6">
+    <div class="max-w-4xl mx-auto relative z-10">
+      <div class="text-center mb-16">
+        <p class="text-sm tracking-[0.3em] uppercase mb-3 font-ui font-medium" style="color: var(--gold)">Liên Hệ</p>
+        <h2 class="font-display text-4xl md:text-5xl font-black mb-4" style="color: var(--gold-light)">Đặt Món Ngay Hôm
+          Nay</h2>
+        <div class="section-divider mt-4"></div>
+        <p class="font-body text-xl mt-6 max-w-xl mx-auto" style="color: rgba(245,217,139,0.8)">
+          Gọi điện hoặc nhắn Zalo để đặt món. Chúng tôi giao hàng nhanh trong 2km hoàn toàn miễn phí!
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 mb-12">
+        <div class="text-center p-8 rounded-lg"
+          style="background: rgba(255,255,255,0.08); border: 1px solid rgba(201,162,39,0.3)">
+          <div class="text-5xl mb-4">📞</div>
+          <h4 class="font-display text-xl font-bold mb-2" style="color: var(--gold-light)">Hotline</h4>
+          <p class="font-ui text-2xl font-bold" style="color: white">0704 725 597</p>
+          <p class="font-body text-sm mt-2" style="color: rgba(245,217,139,0.6)">Gọi trực tiếp</p>
+        </div>
+        <div class="text-center p-8 rounded-lg"
+          style="background: rgba(255,255,255,0.08); border: 1px solid rgba(201,162,39,0.3)">
+          <div class="text-5xl mb-4">💬</div>
+          <h4 class="font-display text-xl font-bold mb-2" style="color: var(--gold-light)">Zalo</h4>
+          <p class="font-ui text-2xl font-bold" style="color: white">0704 725 597</p>
+          <p class="font-body text-sm mt-2" style="color: rgba(245,217,139,0.6)">Nhắn tin đặt hàng</p>
+        </div>
+        <div class="text-center p-8 rounded-lg"
+          style="background: rgba(255,255,255,0.08); border: 1px solid rgba(201,162,39,0.3)">
+          <div class="text-5xl mb-4">🛵</div>
+          <h4 class="font-display text-xl font-bold mb-2" style="color: var(--gold-light)">Giao Hàng</h4>
+          <p class="font-ui text-2xl font-bold" style="color: white">Miễn Phí</p>
+          <p class="font-body text-sm mt-2" style="color: rgba(245,217,139,0.6)">Trong bán kính 2km</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <a href="tel:0704725597" class="btn-primary px-10 py-4 rounded-sm text-center cursor-pointer text-base">
+          📞 Gọi Ngay: 0704 725 597
+        </a>
+        <a href="https://zalo.me/0704725597"
+          class="btn-outline px-10 py-4 rounded-sm text-center cursor-pointer text-base"
+          style="border-color: var(--gold-light); color: var(--gold-light)" target="_blank">
+          💬 Nhắn Zalo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background: #1a0303; border-top: 2px solid rgba(201,162,39,0.3)">
+    <div class="max-w-6xl mx-auto px-6 py-12">
+      <div class="grid md:grid-cols-3 gap-10 mb-10">
+        <div>
+          <h3 class="logo-text text-2xl font-bold mb-4">🍚 Cơm Cháy BVINA</h3>
+          <p class="font-body text-base leading-relaxed" style="color: rgba(245,217,139,0.6)">
+            Món ăn dân dã, đậm đà hương vị quê nhà. Cơm cháy giòn tan, khô quẹt thơm lừng.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-display text-lg font-bold mb-4" style="color: var(--gold-light)">Thực Đơn</h4>
+          <ul class="space-y-2 font-body" style="color: rgba(245,217,139,0.7)">
+            <li>Cơm cháy khô quẹt bình thường — 30k</li>
+            <li>Cơm cháy chà bông mỡ hành — 40k</li>
+            <li>Cơm cháy khô quẹt rau luộc — 40k</li>
+            <li class="font-bold" style="color: var(--gold)">★ Cơm cháy đặc biệt — 50k</li>
+            <li>Rau luộc / Khô quẹt — 10k/phần</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-display text-lg font-bold mb-4" style="color: var(--gold-light)">Liên Hệ</h4>
+          <div class="space-y-3 font-body" style="color: rgba(245,217,139,0.7)">
+            <p>📞 SĐT/Zalo: <span class="font-bold" style="color: var(--gold-light)">0704 725 597</span></p>
+            <p>🛵 Miễn phí ship trong 2km</p>
+            <p>⏰ Mở cửa hàng ngày</p>
+          </div>
+        </div>
+      </div>
+      <div class="pt-8 text-center font-ui text-xs"
+        style="color: rgba(201,162,39,0.3); border-top: 1px solid rgba(201,162,39,0.1)">
+        © 2026 Cơm Cháy Khô Quẹt BVINA. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'fadeUp 0.7s ease forwards';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.menu-card, .photo-frame, .food-plate').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      observer.observe(el);
+    });
+  </script>
+</body>
+
+</html>
