@@ -1,0 +1,333 @@
+```html
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý bán cơm cháy</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-zinc-100 pb-28">
+
+  <div class="mx-auto max-w-md px-4 pt-6">
+
+    <!-- Header -->
+    <div class="rounded-3xl bg-blue-200 p-6">
+      <div class="flex items-center gap-4 text-2xl font-medium">
+        <span>Ngày:</span>
+        <span id="today" class="text-red-500"></span>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="mt-5 grid grid-cols-2 gap-4">
+
+      <div class="rounded-3xl bg-red-200 p-6">
+        <p class="text-2xl font-medium">Đã bán:</p>
+        <p id="soldCount" class="mt-3 text-3xl font-bold text-red-500">
+          0
+        </p>
+      </div>
+
+      <div class="rounded-3xl bg-green-200 p-6">
+        <p class="text-2xl font-medium">Tổng tiền:</p>
+        <p id="totalMoney" class="mt-3 text-3xl font-bold text-green-500">
+          0đ
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Cơm cháy -->
+    <h2 class="mt-8 text-4xl font-bold">
+      Cơm cháy
+    </h2>
+
+    <div id="foods" class="mt-5 grid grid-cols-2 gap-4"></div>
+
+    <!-- Món thêm -->
+    <div class="mt-10 flex items-center gap-3">
+      <h2 class="text-4xl font-bold">
+        Món thêm
+      </h2>
+
+      <span class="text-5xl text-zinc-600">
+        +
+      </span>
+    </div>
+
+    <div id="extras" class="mt-5 grid grid-cols-2 gap-4"></div>
+
+    <!-- Reset -->
+    <button onclick="resetData()" class="mt-8 w-full rounded-2xl bg-red-500 py-4 text-xl font-bold text-white">
+      Reset doanh thu
+    </button>
+
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="fixed bottom-0 left-0 right-0 border-t border-zinc-200 bg-white px-4 py-3">
+    <div class="mx-auto flex max-w-md justify-around">
+
+      <button class="flex flex-col items-center text-blue-500">
+        <span class="text-4xl">💰</span>
+        <span>Thu nhập</span>
+      </button>
+
+      <button class="flex flex-col items-center text-zinc-500">
+        <span class="text-4xl">💳</span>
+        <span>Chi tiêu</span>
+      </button>
+
+      <button class="flex flex-col items-center text-zinc-500">
+        <span class="text-4xl">📊</span>
+        <span>Thống kê</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 px-4">
+
+    <div class="w-full max-w-sm rounded-3xl bg-white p-6 shadow-2xl">
+
+      <h2 class="text-2xl font-bold">
+        Xác nhận thêm
+      </h2>
+
+      <div class="mt-4 flex items-center gap-4">
+
+        <img id="modalImage" class="h-20 w-20 rounded-2xl object-cover">
+
+        <div>
+          <p id="modalName" class="text-xl font-bold"></p>
+
+          <p id="modalPrice" class="mt-1 text-lg font-semibold text-red-500"></p>
+        </div>
+
+      </div>
+
+      <p class="mt-5 text-lg text-zinc-600">
+        Bạn có muốn thêm món này không?
+      </p>
+
+      <div class="mt-6 flex gap-3">
+
+        <button onclick="closeModal()" class="flex-1 rounded-2xl border border-zinc-300 py-3 text-lg font-semibold">
+          Hủy
+        </button>
+
+        <button onclick="confirmItem()" class="flex-1 rounded-2xl bg-blue-500 py-3 text-lg font-semibold text-white">
+          Xác nhận
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const foods = [
+      {
+        name: "Bình thường",
+        price: 35000,
+        image: "images/anhcomchay.png"
+      },
+      {
+        name: "Chà bông, mỡ hành",
+        price: 45000,
+        image: "images/comchay.png"
+      },
+      {
+        name: "Cơm cháy rau luộc",
+        price: 45000,
+        image: "images/4ba140f7-d112-4974-bf43-742abf6ce04a.jpg"
+      },
+      {
+        name: "Đặc biệt",
+        price: 55000,
+        image: "images/dacbiet.jpg"
+      }
+    ];
+
+    const extras = [
+      {
+        name: "Cơm cháy",
+        price: 25000,
+        image: "images/anhcomchay.png"
+      },
+      {
+        name: "Rau luộc",
+        price: 10000,
+        image: "images/anhrau.png"
+      },
+      {
+        name: "Kho quẹt",
+        price: 10000,
+        image: "images/anhkhoquet.png"
+      },
+
+    ];
+
+    const today = new Date().toLocaleDateString("vi-VN");
+
+    document.getElementById("today").textContent = today;
+
+    /* Reset theo ngày */
+    if (localStorage.getItem("saleDate") !== today) {
+
+      localStorage.setItem("saleDate", today);
+      localStorage.setItem("soldCount", 0);
+      localStorage.setItem("totalMoney", 0);
+
+    }
+
+    let soldCount =
+      Number(localStorage.getItem("soldCount")) || 0;
+
+    let totalMoney =
+      Number(localStorage.getItem("totalMoney")) || 0;
+
+    let selectedItem = null;
+
+    function money(number) {
+
+      return number.toLocaleString("vi-VN") + "đ";
+
+    }
+
+    function updateStats() {
+
+      document.getElementById("soldCount").textContent =
+        soldCount;
+
+      document.getElementById("totalMoney").textContent =
+        money(totalMoney);
+
+    }
+
+    function renderItems(data, containerId) {
+
+      const container =
+        document.getElementById(containerId);
+
+      data.forEach(item => {
+
+        const div =
+          document.createElement("div");
+
+        div.className =
+          "cursor-pointer overflow-hidden rounded-3xl bg-white shadow-sm transition-all active:scale-95";
+
+        div.innerHTML = `
+            <img
+                src="${item.image}"
+                alt="${item.name}"
+                class="w-full"
+            >
+
+            <div class="p-4">
+                <h4 class="text-xl font-bold">
+                    ${item.name}
+                </h4>
+
+                <p class="mt-2 text-2xl font-bold text-red-500">
+                    ${money(item.price)}
+                </p>
+            </div>
+        `;
+
+        div.onclick = () => openModal(item);
+
+        container.appendChild(div);
+
+      });
+
+    }
+
+    function openModal(item) {
+
+      selectedItem = item;
+
+      document.getElementById("modalImage").src =
+        item.image;
+
+      document.getElementById("modalName").textContent =
+        item.name;
+
+      document.getElementById("modalPrice").textContent =
+        money(item.price);
+
+      const modal =
+        document.getElementById("modal");
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+
+    }
+
+    function closeModal() {
+
+      const modal =
+        document.getElementById("modal");
+
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+
+    }
+
+    function confirmItem() {
+
+      soldCount++;
+
+      totalMoney += selectedItem.price;
+
+      localStorage.setItem(
+        "soldCount",
+        soldCount
+      );
+
+      localStorage.setItem(
+        "totalMoney",
+        totalMoney
+      );
+
+      updateStats();
+
+      closeModal();
+
+    }
+
+    function resetData() {
+
+      if (!confirm("Reset toàn bộ doanh thu hôm nay?")) {
+        return;
+      }
+
+      soldCount = 0;
+      totalMoney = 0;
+
+      localStorage.setItem("soldCount", 0);
+      localStorage.setItem("totalMoney", 0);
+
+      updateStats();
+
+    }
+
+    renderItems(foods, "foods");
+    renderItems(extras, "extras");
+
+    updateStats();
+
+  </script>
+
+</body>
+
+</html>
+```
