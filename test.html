@@ -38,8 +38,16 @@
         </p>
       </div>
 
-    </div>
 
+
+    </div>
+    <!-- <div class="mt-8 rounded-3xl bg-white p-6 shadow-sm">
+      <h2 class="mb-4 text-2xl font-bold">
+        Thống kê chi tiết
+      </h2>
+
+      <div id="itemStats" class="space-y-3"></div>
+    </div> -->
     <!-- Cơm cháy -->
     <h2 class="mt-8 text-4xl font-bold">
       Cơm cháy
@@ -71,20 +79,20 @@
   <div class="fixed bottom-0 left-0 right-0 border-t border-zinc-200 bg-white px-4 py-3">
     <div class="mx-auto flex max-w-md justify-around">
 
-      <button class="flex flex-col items-center text-blue-500">
+      <a href="test.html" class="flex flex-col items-center text-blue-500">
         <span class="text-4xl">💰</span>
         <span>Thu nhập</span>
-      </button>
+      </a>
 
-      <button class="flex flex-col items-center text-zinc-500">
+      <a href="chitieu.html" class="flex flex-col items-center text-zinc-500">
         <span class="text-4xl">💳</span>
         <span>Chi tiêu</span>
-      </button>
+      </a>
 
-      <button class="flex flex-col items-center text-zinc-500">
+      <a href="thongke.html" class="flex flex-col items-center text-zinc-500">
         <span class="text-4xl">📊</span>
         <span>Thống kê</span>
-      </button>
+      </a>
 
     </div>
   </div>
@@ -130,6 +138,7 @@
 
   </div>
 
+
   <script>
 
     const foods = [
@@ -170,8 +179,7 @@
         name: "Kho quẹt",
         price: 10000,
         image: "images/anhkhoquet.png"
-      },
-
+      }
     ];
 
     const today = new Date().toLocaleDateString("vi-VN");
@@ -184,6 +192,7 @@
       localStorage.setItem("saleDate", today);
       localStorage.setItem("soldCount", 0);
       localStorage.setItem("totalMoney", 0);
+      localStorage.setItem("itemStats", "{}");
 
     }
 
@@ -193,12 +202,13 @@
     let totalMoney =
       Number(localStorage.getItem("totalMoney")) || 0;
 
+    let itemStats =
+      JSON.parse(localStorage.getItem("itemStats")) || {};
+
     let selectedItem = null;
 
     function money(number) {
-
       return number.toLocaleString("vi-VN") + "đ";
-
     }
 
     function updateStats() {
@@ -208,6 +218,42 @@
 
       document.getElementById("totalMoney").textContent =
         money(totalMoney);
+
+    }
+
+    function updateItemStats() {
+
+      const container =
+        document.getElementById("itemStats");
+
+      container.innerHTML = "";
+
+      const allItems = [...foods, ...extras];
+
+      allItems.forEach(item => {
+
+        const count =
+          itemStats[item.name] || 0;
+
+        const row =
+          document.createElement("div");
+
+        row.className =
+          "flex items-center justify-between border-b border-zinc-200 pb-2";
+
+        row.innerHTML = `
+      <span class="font-medium">
+        ${item.name}
+      </span>
+
+      <span class="font-bold text-red-500">
+        ${count} cái
+      </span>
+    `;
+
+        container.appendChild(row);
+
+      });
 
     }
 
@@ -225,22 +271,22 @@
           "cursor-pointer overflow-hidden rounded-3xl bg-white shadow-sm transition-all active:scale-95";
 
         div.innerHTML = `
-            <img
-                src="${item.image}"
-                alt="${item.name}"
-                class="w-full"
-            >
+      <img
+        src="${item.image}"
+        alt="${item.name}"
+        class="w-full"
+      >
 
-            <div class="p-4">
-                <h4 class="text-xl font-bold">
-                    ${item.name}
-                </h4>
+      <div class="p-4">
+        <h4 class="text-xl font-bold">
+          ${item.name}
+        </h4>
 
-                <p class="mt-2 text-2xl font-bold text-red-500">
-                    ${money(item.price)}
-                </p>
-            </div>
-        `;
+        <p class="mt-2 text-2xl font-bold text-red-500">
+          ${money(item.price)}
+        </p>
+      </div>
+    `;
 
         div.onclick = () => openModal(item);
 
@@ -287,6 +333,9 @@
 
       totalMoney += selectedItem.price;
 
+      itemStats[selectedItem.name] =
+        (itemStats[selectedItem.name] || 0) + 1;
+
       localStorage.setItem(
         "soldCount",
         soldCount
@@ -297,7 +346,13 @@
         totalMoney
       );
 
+      localStorage.setItem(
+        "itemStats",
+        JSON.stringify(itemStats)
+      );
+
       updateStats();
+      updateItemStats();
 
       closeModal();
 
@@ -311,11 +366,25 @@
 
       soldCount = 0;
       totalMoney = 0;
+      itemStats = {};
 
-      localStorage.setItem("soldCount", 0);
-      localStorage.setItem("totalMoney", 0);
+      localStorage.setItem(
+        "soldCount",
+        0
+      );
+
+      localStorage.setItem(
+        "totalMoney",
+        0
+      );
+
+      localStorage.setItem(
+        "itemStats",
+        "{}"
+      );
 
       updateStats();
+      updateItemStats();
 
     }
 
@@ -323,10 +392,12 @@
     renderItems(extras, "extras");
 
     updateStats();
+    updateItemStats();
 
   </script>
+
+
 
 </body>
 
 </html>
-```

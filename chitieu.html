@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi tiêu</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-zinc-100 min-h-screen">
+
+  <div class="max-w-md mx-auto p-4">
+
+    <h1 class="text-4xl font-bold mb-6">
+      Chi tiêu
+    </h1>
+
+    <!-- Tổng chi -->
+    <div class="bg-red-200 rounded-3xl p-6">
+      <p class="text-xl">
+        Tổng chi hôm nay
+      </p>
+
+      <p id="totalExpense" class="mt-2 text-4xl font-bold text-red-500">
+        0đ
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white rounded-3xl p-6 mt-6 shadow-sm">
+
+      <input id="expenseName" type="text" placeholder="Tên khoản chi" class="w-full border rounded-xl px-4 py-3">
+
+      <input id="expenseMoney" type="number" placeholder="Số tiền" class="w-full border rounded-xl px-4 py-3 mt-3">
+
+      <button onclick="addExpense()" class="w-full bg-blue-500 text-white py-3 rounded-xl font-bold mt-4">
+        Thêm khoản chi
+      </button>
+
+    </div>
+
+    <!-- Danh sách -->
+    <div class="bg-white rounded-3xl p-6 mt-6 shadow-sm">
+
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">
+          Danh sách chi tiêu
+        </h2>
+
+        <button onclick="resetExpenses()" class="text-red-500 font-bold">
+          Reset
+        </button>
+      </div>
+
+      <div id="expenseList" class="space-y-3">
+      </div>
+
+    </div>
+
+    <!-- Lợi nhuận -->
+    <div class="bg-green-100 rounded-3xl p-6 mt-6">
+
+      <p class="text-xl">
+        Lợi nhuận
+      </p>
+
+      <p id="profit" class="text-4xl font-bold mt-2 text-green-600">
+        0đ
+      </p>
+
+    </div>
+
+    <a href="index.html" class="block text-center mt-6 bg-blue-500 text-white py-4 rounded-2xl font-bold">
+      Quay lại
+    </a>
+    <div class="fixed bottom-0 left-0 right-0 border-t border-zinc-200 bg-white px-4 py-3">
+      <div class="mx-auto flex max-w-md justify-around">
+
+        <a href="test.html" class="flex flex-col items-center text-blue-500">
+          <span class="text-4xl">💰</span>
+          <span>Thu nhập</span>
+        </a>
+
+        <a href="chitieu.html" class="flex flex-col items-center text-zinc-500">
+          <span class="text-4xl">💳</span>
+          <span>Chi tiêu</span>
+        </a>
+
+        <a href="thongke.html" class="flex flex-col items-center text-zinc-500">
+          <span class="text-4xl">📊</span>
+          <span>Thống kê</span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    let expenses =
+      JSON.parse(localStorage.getItem("expenses")) || [];
+
+    function money(number) {
+
+      return number.toLocaleString("vi-VN") + "đ";
+
+    }
+
+    function saveExpenses() {
+
+      localStorage.setItem(
+        "expenses",
+        JSON.stringify(expenses)
+      );
+
+    }
+
+    function addExpense() {
+
+      const name =
+        document.getElementById("expenseName").value.trim();
+
+      const amount =
+        Number(document.getElementById("expenseMoney").value);
+
+      if (!name || amount <= 0) {
+
+        alert("Nhập đầy đủ thông tin");
+
+        return;
+      }
+
+      expenses.push({
+        name,
+        amount,
+        time: new Date().toLocaleString("vi-VN")
+      });
+
+      saveExpenses();
+
+      renderExpenses();
+
+      document.getElementById("expenseName").value = "";
+      document.getElementById("expenseMoney").value = "";
+
+    }
+
+    function deleteExpense(index) {
+
+      expenses.splice(index, 1);
+
+      saveExpenses();
+
+      renderExpenses();
+
+    }
+
+    function resetExpenses() {
+
+      if (!confirm("Xóa toàn bộ chi tiêu?")) {
+        return;
+      }
+
+      expenses = [];
+
+      saveExpenses();
+
+      renderExpenses();
+
+    }
+
+    function renderExpenses() {
+
+      const list =
+        document.getElementById("expenseList");
+
+      list.innerHTML = "";
+
+      let totalExpense = 0;
+
+      expenses.forEach((item, index) => {
+
+        totalExpense += item.amount;
+
+        list.innerHTML += `
+          <div class="border-b pb-3">
+
+            <div class="flex justify-between">
+
+              <div>
+
+                <div class="font-bold">
+                  ${item.name}
+                </div>
+
+                <div class="text-sm text-zinc-500">
+                  ${item.time}
+                </div>
+
+              </div>
+
+              <div class="text-right">
+
+                <div class="font-bold text-red-500">
+                  ${money(item.amount)}
+                </div>
+
+                <button
+                  onclick="deleteExpense(${index})"
+                  class="text-xs text-red-500"
+                >
+                  Xóa
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        `;
+
+      });
+
+      document.getElementById("totalExpense").textContent =
+        money(totalExpense);
+
+      const income =
+        Number(localStorage.getItem("totalMoney")) || 0;
+
+      document.getElementById("profit").textContent =
+        money(income - totalExpense);
+
+    }
+
+    renderExpenses();
+
+  </script>
+
+</body>
+
+</html>
