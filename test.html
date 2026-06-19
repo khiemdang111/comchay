@@ -38,7 +38,15 @@
         </p>
       </div>
 
+      <div class="rounded-3xl bg-orange-200 p-6">
+        <p class="text-xl font-medium">Cơm cháy:</p>
+        <p id="foodSold" class="text-3xl font-bold text-orange-600">0</p>
+      </div>
 
+      <div class="rounded-3xl bg-purple-200 p-6">
+        <p class="text-xl font-medium">Món thêm:</p>
+        <p id="extraSold" class="text-3xl font-bold text-purple-600">0</p>
+      </div>
 
     </div>
     <!-- <div class="mt-8 rounded-3xl bg-white p-6 shadow-sm">
@@ -218,7 +226,11 @@
 
       document.getElementById("totalMoney").textContent =
         money(totalMoney);
+      document.getElementById("foodSold").textContent =
+        getFoodSold();
 
+      document.getElementById("extraSold").textContent =
+        getExtraSold();
     }
 
     function updateItemStats() {
@@ -226,29 +238,52 @@
       const container =
         document.getElementById("itemStats");
 
+      if (!container) return;
+
       container.innerHTML = "";
 
-      const allItems = [...foods, ...extras];
+      // Nhóm cơm cháy
+      const foodTitle = document.createElement("h3");
+      foodTitle.className = "text-lg font-bold mt-4";
+      foodTitle.textContent = "🍚 Cơm cháy";
+      container.appendChild(foodTitle);
 
-      allItems.forEach(item => {
+      foods.forEach(item => {
 
-        const count =
-          itemStats[item.name] || 0;
+        const count = itemStats[item.name] || 0;
 
-        const row =
-          document.createElement("div");
+        const row = document.createElement("div");
 
         row.className =
-          "flex items-center justify-between border-b border-zinc-200 pb-2";
+          "flex items-center justify-between border-b border-zinc-200 py-2";
 
         row.innerHTML = `
-      <span class="font-medium">
-        ${item.name}
-      </span>
+      <span>${item.name}</span>
+      <span>${count} phần</span>
+    `;
 
-      <span class="font-bold text-red-500">
-        ${count} cái
-      </span>
+        container.appendChild(row);
+
+      });
+
+      // Nhóm món thêm
+      const extraTitle = document.createElement("h3");
+      extraTitle.className = "text-lg font-bold mt-6";
+      extraTitle.textContent = "➕ Món thêm";
+      container.appendChild(extraTitle);
+
+      extras.forEach(item => {
+
+        const count = itemStats[item.name] || 0;
+
+        const row = document.createElement("div");
+
+        row.className =
+          "flex items-center justify-between border-b border-zinc-200 py-2";
+
+        row.innerHTML = `
+      <span>${item.name}</span>
+      <span>${count} phần</span>
     `;
 
         container.appendChild(row);
@@ -256,7 +291,17 @@
       });
 
     }
+    function getFoodSold() {
+      return foods.reduce((total, item) => {
+        return total + (itemStats[item.name] || 0);
+      }, 0);
+    }
 
+    function getExtraSold() {
+      return extras.reduce((total, item) => {
+        return total + (itemStats[item.name] || 0);
+      }, 0);
+    }
     function renderItems(data, containerId) {
 
       const container =
